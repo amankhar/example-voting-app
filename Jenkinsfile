@@ -19,29 +19,18 @@ pipeline {
     }
 
     stage('Unit Test') {
-      parallel {
-        stage('Unit Test') {
-          agent {
-            docker {
-              image 'python:2.7.16-slim'
-              args '--user root'
-            }
-
-          }
-          steps {
-            echo 'Running Unit Tests on vote app'
-            dir(path: 'vote') {
-              sh 'pip install -r requirements.txt'
-              sh 'nosetests -v'
-            }
-
-          }
+      agent {
+        docker {
+          image 'python:2.7.16-slim'
+          args '--user root'
         }
 
-        stage('test') {
-          steps {
-            sleep 5
-          }
+      }
+      steps {
+        echo 'Running Unit Tests on vote app'
+        dir(path: 'vote') {
+          sh 'pip install -r requirements.txt'
+          sh 'nosetests -v'
         }
 
       }
